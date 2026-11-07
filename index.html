@@ -191,6 +191,17 @@ footer .legal{border-top:1px solid #1f2a44;margin-top:32px;padding-top:20px;disp
 
 .float{position:fixed;z-index:25;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:0 10px 26px rgba(0,0,0,.28)}
 .float svg{width:30px;height:30px}
+/* Destaque "Seja nosso cliente" */
+.vip{display:inline-flex;align-items:center;gap:9px;padding:7px 15px 7px 12px;border-radius:999px;text-decoration:none;font-weight:700;font-size:15px;background:var(--brand-soft);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 28%,transparent),0 0 18px -6px color-mix(in srgb,var(--brand) 55%,transparent);white-space:nowrap;transition:box-shadow .3s,transform .2s}
+.vip:hover{transform:translateY(-1px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 45%,transparent),0 0 24px -4px color-mix(in srgb,var(--brand) 70%,transparent)}
+nav a.vip{color:var(--brand)}
+.vip i{position:relative;width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none}
+.vip i::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--brand);animation:vipPulse 2s ease-out infinite}
+.vip span{background:linear-gradient(100deg,var(--brand) 0%,var(--brand) 40%,#9cc2ff 50%,var(--brand) 60%,var(--brand) 100%);background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:vipShine 4.5s ease-in-out infinite}
+@keyframes vipPulse{0%{transform:scale(1);opacity:.7}80%,100%{transform:scale(3);opacity:0}}
+@keyframes vipShine{0%,55%{background-position:100% 0}85%,100%{background-position:0 0}}
+.vip-m{display:none}
+@media (max-width:920px){.vip-m{display:inline-flex;font-size:14px}header .btn-wa{display:none}}
 </style>
 
 </head>
@@ -215,12 +226,13 @@ footer .legal{border-top:1px solid #1f2a44;margin-top:32px;padding-top:20px;disp
   <div class="wrap">
     <a class="logo" href="./"><span class="sr">Ícaro Jeans</span></a>
     <nav aria-label="Seções">
-      <a href="https://wa.me/5517991153093?text=Ol%C3%A1!%20Quero%20ser%20cliente%20%C3%8Dcaro%20Jeans." target="_blank" rel="noopener">Seja nosso cliente</a>
+      <a class="vip" href="https://wa.me/5517991153093?text=Ol%C3%A1!%20Quero%20ser%20cliente%20%C3%8Dcaro%20Jeans." target="_blank" rel="noopener"><i></i><span>Seja nosso cliente</span></a>
       <a href="#vitrine">Vitrine</a>
       <a href="#marcas">Marcas</a>
       <a href="#visite">Como chegar</a>
       <a href="#trabalhe">Trabalhe conosco</a>
     </nav>
+    <a class="vip vip-m" href="https://wa.me/5517991153093?text=Ol%C3%A1!%20Quero%20ser%20cliente%20%C3%8Dcaro%20Jeans." target="_blank" rel="noopener"><i></i><span>Seja nosso cliente</span></a>
     <a class="btn btn-wa" href="https://wa.me/5517992579140?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20%C3%8Dcaro%20Jeans%20e%20tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>WhatsApp</a>
   </div>
 </header>
