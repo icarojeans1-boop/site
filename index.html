@@ -76,16 +76,16 @@ nav a:hover{color:var(--fg)}
 header .btn{min-height:44px;padding:0 18px;font-size:15px}
 @media (max-width:920px){nav{display:none}}
 
-/* Banner do Instagram: fotos andando, sem texto */
+/* Banner do Instagram: fotos andando. A foto aparece sempre inteira (contain), para nunca cortar texto; o fundo desfocado preenche o que sobra do cartão */
 .banner{padding:0;background:var(--ink);overflow:hidden}
 .b-track{display:flex;gap:4px;will-change:transform}
 .b-track.anim{transition:transform .9s cubic-bezier(.65,0,.35,1)}
-.slide{flex:0 0 calc((100% - 16px)/5);aspect-ratio:9/16;max-width:100%;border:0;padding:0;margin:0;background:#111;cursor:pointer;overflow:hidden;display:block}
+.slide{flex:0 0 calc((100% - 16px)/5);aspect-ratio:9/16;max-width:100%;border:0;padding:0;margin:0;background:#111;cursor:pointer;overflow:hidden;display:block;position:relative}
 @media (max-width:1100px){.slide{flex-basis:calc((100% - 12px)/4)}}
 @media (max-width:820px){.slide{flex-basis:calc((100% - 8px)/3)}}
 @media (max-width:520px){.slide{flex-basis:calc((100% - 4px)/2)}}
-.slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 2s ease}
-.slide:hover img{transform:scale(1.04)}
+.slide img{position:relative;width:100%;height:100%;object-fit:contain;display:block}
+.slide img.fundo{position:absolute;inset:0;object-fit:cover;filter:blur(18px) brightness(.85);transform:scale(1.15)}
 
 /* Apresentação */
 .intro-sec{padding-block:64px 24px}
@@ -423,7 +423,7 @@ function iniciar(){
   var WA="https://wa.me/5517992579140?text=";
   var track=document.getElementById('track'), pos=0, timer=null;
   function slide(s,i){var b=document.createElement('button');b.type='button';b.className='slide';b.setAttribute('aria-label','Ver foto do Instagram');
-    var im=document.createElement('img');im.referrerPolicy='no-referrer';im.decoding='async';im.src=s.img;im.alt='';im.onerror=function(){b.remove()};b.appendChild(im);b.addEventListener('click',function(){abrir(i)});return b;}
+    var im=document.createElement('img');im.referrerPolicy='no-referrer';im.decoding='async';im.src=s.img;im.alt='';im.onerror=function(){b.remove()};var fu=document.createElement('img');fu.className='fundo';fu.referrerPolicy='no-referrer';fu.decoding='async';fu.src=s.img;fu.alt='';fu.setAttribute('aria-hidden','true');b.appendChild(fu);b.appendChild(im);b.addEventListener('click',function(){abrir(i)});return b;}
   STORIES.forEach(function(s,i){track.appendChild(slide(s,i))});
   // cópias para o giro sem fim
   for(var r=0;r<2;r++)STORIES.forEach(function(s,i){track.appendChild(slide(s,i))});
