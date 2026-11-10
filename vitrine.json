@@ -1,0 +1,19 @@
+{
+  "atualizado": "2026-11-10",
+  "pecas": [
+    {"id": 114, "g": "fem", "cat": "Calças", "nome": "Pantalona jeans com amarração", "img": "img/vitrine/f01-pantalona.jpg", "novo": true},
+    {"id": 113, "g": "fem", "cat": "Blusas", "nome": "Tomara que caia preto", "img": "img/vitrine/f02-tomara-que-caia.jpg", "novo": true},
+    {"id": 112, "g": "fem", "cat": "Vestidos", "nome": "Vestido longo jeans", "img": "img/vitrine/f03-vestido-longo.jpg", "novo": true},
+    {"id": 111, "g": "fem", "cat": "Calças", "nome": "Wide leg branca com fenda", "img": "img/vitrine/f04-wide-branca.jpg", "novo": true},
+    {"id": 110, "g": "fem", "cat": "Blusas", "nome": "Peplum + jeans wide", "img": "img/vitrine/f05-peplum.jpg", "novo": true},
+    {"id": 109, "g": "fem", "cat": "Blusas", "nome": "Regata rosa + jeans claro", "img": "img/vitrine/f06-regata-rosa.jpg", "novo": true},
+    {"id": 108, "g": "fem", "cat": "Macacões", "nome": "Macacões", "img": "img/vitrine/f07-macacoes.jpg", "novo": true},
+    {"id": 107, "g": "fem", "cat": "Blusas", "nome": "Colete de tricô com botões", "img": "img/vitrine/f08-colete-trico.jpg", "novo": true},
+    {"id": 106, "g": "masc", "cat": "Bermudas", "nome": "Short Revanche", "img": "img/vitrine/m01-short-revanche.jpg", "novo": false},
+    {"id": 105, "g": "masc", "cat": "Bermudas", "nome": "Bermuda D’água", "img": "img/vitrine/m02-bermuda-dagua.jpg", "novo": false},
+    {"id": 104, "g": "masc", "cat": "Bermudas", "nome": "Bermuda jeans Revanche", "img": "img/vitrine/m03-bermuda-jeans.jpg", "novo": false},
+    {"id": 103, "g": "masc", "cat": "Calças", "nome": "Calças jeans Revanche", "img": "img/vitrine/m04-calcas-revanche.jpg", "novo": false},
+    {"id": 102, "g": "masc", "cat": "Camisetas", "nome": "Camiseta básica Revanche", "img": "img/vitrine/m05-camiseta-basica.jpg", "novo": false},
+    {"id": 101, "g": "masc", "cat": "Camisetas", "nome": "Camiseta básica marrom", "img": "img/vitrine/m06-camiseta-marrom.jpg", "novo": false}
+  ]
+}
