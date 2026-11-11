@@ -523,9 +523,16 @@ var STORIES = RESERVA;
 fetch('stories.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
   if(!(d&&d.itens&&d.itens.length>=3)) return;
   var lista=d.itens.map(function(x){return {img:x.img,legenda:'Novidade no Instagram',quando:x.quando||''}});
-  // confere se as fotos do Instagram abrem; se não abrirem em 5 s, fica com as fotos da loja
-  return new Promise(function(ok){var i=new Image(),fim=setTimeout(function(){ok()},5000);
-    i.referrerPolicy='no-referrer';i.onload=function(){clearTimeout(fim);STORIES=lista;ok()};i.onerror=function(){clearTimeout(fim);ok()};i.src=lista[0].img;});
+  // testa TODAS as fotos do Instagram e usa só as que abriram; se abrirem menos de 3 em 6 s, fica com as fotos da loja
+  return new Promise(function(ok){
+    var boas=new Array(lista.length),falta=lista.length,feito=false;
+    function fim(){if(feito)return;feito=true;var l=boas.filter(Boolean);if(l.length>=3)STORIES=l;ok();}
+    var t=setTimeout(fim,6000);
+    lista.forEach(function(s,k){var i=new Image();i.referrerPolicy='no-referrer';
+      i.onload=function(){if(i.naturalWidth>0)boas[k]=s;if(--falta===0){clearTimeout(t);fim();}};
+      i.onerror=function(){if(--falta===0){clearTimeout(t);fim();}};
+      i.src=s.img;});
+  });
 }).catch(function(){}).then(iniciar);
 
 function iniciar(){
@@ -538,8 +545,8 @@ function iniciar(){
   // cópias para o giro sem fim
   for(var r=0;r<2;r++)STORIES.forEach(function(s,i){track.appendChild(slide(s,i))});
   var N=STORIES.length;
-  function passo(){var c=track.children[0];return c.getBoundingClientRect().width+4;}
-  function anda(){pos++;track.classList.add('anim');track.style.transform='translateX('+(-pos*passo())+'px)';
+  function passo(){var c=track.children[0];return c?c.getBoundingClientRect().width+4:0;}
+  function anda(){if(track.children.length<=N)return;pos++;track.classList.add('anim');track.style.transform='translateX('+(-pos*passo())+'px)';
     if(pos>=N){setTimeout(function(){track.classList.remove('anim');pos=0;track.style.transform='translateX(0)';},950);}}
   function auto(){clearInterval(timer);timer=setInterval(anda,2200);}
   track.addEventListener('pointerenter',function(){clearInterval(timer)});
