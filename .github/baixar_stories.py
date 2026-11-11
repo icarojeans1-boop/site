@@ -15,13 +15,18 @@ ok, erro = [], []
 for it in pedido.get('itens', []):
     sid, url = str(it['id']), it['url']
     destino = os.path.join(PASTA, sid + '.jpg')
-    if os.path.exists(destino):
+    vurl = it.get('video_url')
+    vdest = os.path.join(PASTA, sid + '.mp4')
+    if os.path.exists(destino) and (not vurl or os.path.exists(vdest)):
         ok.append(sid)
         continue
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        dados = urllib.request.urlopen(req, timeout=60).read()
-        open(destino, 'wb').write(dados)
+        if not os.path.exists(destino):
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            open(destino, 'wb').write(urllib.request.urlopen(req, timeout=60).read())
+        if vurl and not os.path.exists(vdest):
+            req = urllib.request.Request(vurl, headers={'User-Agent': 'Mozilla/5.0'})
+            open(vdest, 'wb').write(urllib.request.urlopen(req, timeout=120).read())
         indice[sid] = {k: it.get(k) for k in ('timestamp', 'tipo')}
         indice[sid]['baixado'] = int(time.time())
         ok.append(sid)
@@ -32,7 +37,7 @@ for it in pedido.get('itens', []):
 limite = time.time() - DIAS_GUARDAR * 86400
 for sid in list(indice):
     if indice[sid].get('baixado', 0) < limite:
-        for p in (os.path.join(PASTA, sid + '.jpg'),):
+        for p in (os.path.join(PASTA, sid + '.jpg'), os.path.join(PASTA, sid + '.mp4')):
             if os.path.exists(p):
                 os.remove(p)
         del indice[sid]
