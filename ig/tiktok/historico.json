@@ -1,0 +1,48 @@
+{
+ "postados": [
+  {
+   "data": "2026-11-13",
+   "tipo": "teste",
+   "formato": "fotos",
+   "story_ids": [
+    "18130344580883940",
+    "18134326946509148",
+    "17958629103255911",
+    "18134238310780143",
+    "17960488683018943",
+    "18377991865214280",
+    "18182992093437198",
+    "17916339378508794",
+    "18653570845030594"
+   ],
+   "metricool_id": 427243036,
+   "arquivos": [
+    "ig/tiktok/2026-11-13_stories_1.jpg",
+    "ig/tiktok/2026-11-13_stories_2.jpg",
+    "ig/tiktok/2026-11-13_stories_3.jpg",
+    "ig/tiktok/2026-11-13_stories_4.jpg",
+    "ig/tiktok/2026-11-13_stories_5.jpg",
+    "ig/tiktok/2026-11-13_stories_6.jpg",
+    "ig/tiktok/2026-11-13_stories_7.jpg",
+    "ig/tiktok/2026-11-13_stories_8.jpg",
+    "ig/tiktok/2026-11-13_stories_9.jpg"
+   ]
+  },
+  {
+   "data": "2026-11-13",
+   "tipo": "teste",
+   "formato": "fotos",
+   "story_ids": [],
+   "metricool_id": 426928705,
+   "arquivos": [
+    "ig/post/2026-11-12_1.jpg",
+    "ig/post/2026-11-12_2.jpg",
+    "ig/post/2026-11-12_3.jpg",
+    "ig/post/2026-11-12_4.jpg",
+    "ig/post/2026-11-12_5.jpg",
+    "ig/post/2026-11-12_6.jpg",
+    "ig/post/2026-11-12_7.jpg"
+   ]
+  }
+ ]
+}
