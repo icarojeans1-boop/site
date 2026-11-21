@@ -522,7 +522,8 @@ var RESERVA = [
 var STORIES = RESERVA;
 fetch('stories.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
   if(!(d&&d.itens&&d.itens.length>=3)) return;
-  var lista=d.itens.map(function(x){return {img:x.img,legenda:'Novidade no Instagram',quando:x.quando||''}});
+  // usa a cópia guardada no próprio site (campo "local"); o link do Instagram só se a cópia faltar
+  var lista=d.itens.map(function(x){return {img:x.local||x.img,legenda:'Novidade no Instagram',quando:x.quando||''}});
   // testa TODAS as fotos do Instagram e usa só as que abriram; se abrirem menos de 3 em 6 s, fica com as fotos da loja
   return new Promise(function(ok){
     var boas=new Array(lista.length),falta=lista.length,feito=false;
