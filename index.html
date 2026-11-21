@@ -584,34 +584,46 @@ function iniciar(){
 
 /* LANÇAMENTOS: as peças ficam em vitrine.json e vão se acumulando, por categoria. */
 function iniciarLancamentos(){
-  var CATS={todos:['Todas','Blusas','Calças','Vestidos','Macacões','Bermudas','Camisetas'],fem:['Todas','Blusas','Calças','Vestidos','Macacões'],masc:['Todas','Calças','Bermudas','Camisetas']};
-  var GL={fem:'Feminino',masc:'Masculino'}, G=[['todos','Todos'],['fem','Feminino'],['masc','Masculino']];
-  var est={g:'todos',c:'Todas'}, pecas=[];
+  var CATS={todos:['Todas','Do Instagram','Blusas','Calças','Vestidos','Macacões','Bermudas','Camisetas'],fem:['Todas','Do Instagram','Blusas','Calças','Vestidos','Macacões'],masc:['Todas','Do Instagram','Calças','Bermudas','Camisetas']};
+  var GL={fem:'Feminino',masc:'Masculino',todos:'Feminino e masculino'}, G=[['todos','Todos'],['fem','Feminino'],['masc','Masculino']];
+  var est={g:'todos',c:'Todas'}, pecas=[], MAIS=24, mostrar=MAIS;
   var cg=document.getElementById('chips-g'), cc=document.getElementById('chips-c'), grid=document.getElementById('pecas'), cnt=document.getElementById('lanc-n');
+  var maisBt=document.createElement('button');maisBt.type='button';maisBt.className='chip';maisBt.style.cssText='margin:32px auto 0;display:block';
+  maisBt.onclick=function(){mostrar+=MAIS;desenha(true);};grid.parentNode.appendChild(maisBt);
   function chip(txt,on,fn){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=txt;b.setAttribute('aria-pressed',on?'true':'false');b.onclick=fn;return b;}
-  function desenha(){
+  function desenha(manter){
+    if(!manter)mostrar=MAIS;
     cg.innerHTML='';G.forEach(function(x){cg.appendChild(chip(x[1],est.g===x[0],function(){est.g=x[0];if(CATS[x[0]].indexOf(est.c)<0)est.c='Todas';desenha();}));});
     cc.innerHTML='';CATS[est.g].forEach(function(c){cc.appendChild(chip(c,est.c===c,function(){est.c=c;desenha();}));});
-    var l=pecas.filter(function(p){return (est.g==='todos'||p.g===est.g)&&(est.c==='Todas'||p.cat===est.c)});
-    cnt.textContent=l.length===1?'1 peça':l.length+' peças';
+    var l=pecas.filter(function(p){return (est.g==='todos'||p.g===est.g||p.g==='todos')&&(est.c==='Todas'||p.cat===est.c)});
+    cnt.textContent=l.length===1?'1 foto':l.length+' fotos';
     grid.innerHTML='';
-    l.forEach(function(p){
+    l.slice(0,mostrar).forEach(function(p){
       var f=document.createElement('figure');f.className='peca';
       var ft=document.createElement('div');ft.className='ft';
       var im=document.createElement('img');im.src=p.img;im.alt=p.nome;im.loading='lazy';im.decoding='async';ft.appendChild(im);
       if(p.novo){var n=document.createElement('span');n.className='novo';n.textContent='Novo';ft.appendChild(n);}
       var cap=document.createElement('figcaption');var b=document.createElement('b');b.textContent=p.nome;var s=document.createElement('small');s.textContent=GL[p.g]+' · '+p.cat;cap.appendChild(b);cap.appendChild(s);
       var a=document.createElement('a');a.className='btn btn-wa';a.target='_blank';a.rel='noopener';
-      a.href='https://wa.me/5517992579140?text='+encodeURIComponent('Olá! Vi no site a peça "'+p.nome+'" (código IJ-0'+p.id+') e tenho interesse.');
+      a.href='https://wa.me/5517992579140?text='+encodeURIComponent(p.msg||('Olá! Vi no site a peça "'+p.nome+'" (código IJ-0'+p.id+') e tenho interesse.'));
       a.innerHTML='<svg aria-hidden="true"><use href="#i-wa"/></svg>Quero essa peça';
       f.appendChild(ft);f.appendChild(cap);f.appendChild(a);grid.appendChild(f);
     });
+    var resta=l.length-mostrar;maisBt.hidden=resta<=0;maisBt.textContent='Ver mais fotos ('+resta+')';
   }
   document.querySelectorAll('nav a[data-g]').forEach(function(a){a.addEventListener('click',function(){est.g=a.getAttribute('data-g');est.c='Todas';if(pecas.length)desenha();});});
-  fetch('vitrine.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
-    if(!d||!d.pecas||!d.pecas.length){document.getElementById('lancamentos').hidden=true;return;}
-    pecas=d.pecas.slice().sort(function(a,b){return b.id-a.id});desenha();
-  }).catch(function(){document.getElementById('lancamentos').hidden=true;});
+  function pega(u){return fetch(u,{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null});}
+  /* galeria.json: todas as fotos já postadas no Instagram ficam guardadas aqui para sempre (atualizado sozinho a cada post). */
+  Promise.all([pega('galeria.json'),pega('vitrine.json')]).then(function(r){
+    var g=(r[0]&&r[0].fotos)||[], v=(r[1]&&r[1].pecas)||[], hoje=Date.now();
+    var gf=g.map(function(x){var dt=x.data.split('-'),br=dt[2]+'/'+dt[1];
+      return {img:x.img,nome:'Postado em '+br,cat:'Do Instagram',g:x.tema==='feminino'?'fem':(x.tema==='masculino'?'masc':'todos'),
+        novo:(hoje-new Date(x.data+'T12:00:00-03:00'))<7*864e5,
+        msg:'Olá! Vi no site a foto postada em '+br+' e tenho interesse nas peças. Tem no meu tamanho?'};});
+    pecas=gf.concat(v.slice().sort(function(a,b){return b.id-a.id}));
+    if(!pecas.length){document.getElementById('lancamentos').hidden=true;return;}
+    desenha();
+  });
 }
 iniciarLancamentos();
 </script>
