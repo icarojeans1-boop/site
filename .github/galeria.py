@@ -32,9 +32,27 @@ for nome in sorted(os.listdir(POST)) if os.path.isdir(POST) else []:
         print('pulei', nome, e)
         continue
     h = hist.get(data, {})
-    gal['fotos'].append({'img': DEST.replace(os.sep, '/') + '/' + nome, 'data': data,
-                         'tema': h.get('tema', ''), 'link': h.get('permalink', '')})
+    item = {'img': DEST.replace(os.sep, '/') + '/' + nome, 'data': data,
+            'tema': h.get('tema', ''), 'link': h.get('permalink', '')}
+    # categoria de cada foto, escrita pela tarefa do post do dia em historico.json -> "pecas": {"1": {"g","cat","nome"}}
+    num = os.path.splitext(nome)[0][11:]
+    pc = (h.get('pecas') or {}).get(num) or {}
+    item['g'] = pc.get('g') or {'feminino': 'fem', 'masculino': 'masc'}.get(h.get('tema', ''), 'todos')
+    item['cat'] = pc.get('cat', '')
+    if pc.get('nome'):
+        item['nome'] = pc['nome']
+    gal['fotos'].append(item)
     novas += 1
+
+# se a categoria chegou depois da foto, completa as fotos que ainda estao sem categoria
+for f in gal['fotos']:
+    if f.get('cat'):
+        continue
+    num = os.path.splitext(os.path.basename(f['img']))[0][11:]
+    pc = (hist.get(f['data'], {}).get('pecas') or {}).get(num) or {}
+    for k in ('g', 'cat', 'nome'):
+        if pc.get(k):
+            f[k] = pc[k]
 
 def ordem(f):
     n = os.path.splitext(os.path.basename(f['img']))[0][11:]

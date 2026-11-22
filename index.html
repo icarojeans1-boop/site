@@ -585,7 +585,7 @@ function iniciar(){
 
 /* LANÇAMENTOS: as peças ficam em vitrine.json e vão se acumulando, por categoria. */
 function iniciarLancamentos(){
-  var CATS={todos:['Todas','Do Instagram','Blusas','Calças','Vestidos','Macacões','Bermudas','Camisetas'],fem:['Todas','Do Instagram','Blusas','Calças','Vestidos','Macacões'],masc:['Todas','Do Instagram','Calças','Bermudas','Camisetas']};
+  var CATS={todos:['Todas','Blusas','Calças','Vestidos','Macacões','Bermudas','Camisetas'],fem:['Todas','Blusas','Calças','Vestidos','Macacões'],masc:['Todas','Calças','Bermudas','Camisetas']};
   var GL={fem:'Feminino',masc:'Masculino',todos:'Feminino e masculino'}, G=[['todos','Todos'],['fem','Feminino'],['masc','Masculino']];
   var est={g:'todos',c:'Todas'}, pecas=[], MAIS=24, mostrar=MAIS;
   var cg=document.getElementById('chips-g'), cc=document.getElementById('chips-c'), grid=document.getElementById('pecas'), cnt=document.getElementById('lanc-n');
@@ -604,7 +604,7 @@ function iniciarLancamentos(){
       var ft=document.createElement('div');ft.className='ft';
       var im=document.createElement('img');im.src=p.img;im.alt=p.nome;im.loading='lazy';im.decoding='async';ft.appendChild(im);
       if(p.novo){var n=document.createElement('span');n.className='novo';n.textContent='Novo';ft.appendChild(n);}
-      var cap=document.createElement('figcaption');var b=document.createElement('b');b.textContent=p.nome;var s=document.createElement('small');s.textContent=GL[p.g]+' · '+p.cat;cap.appendChild(b);cap.appendChild(s);
+      var cap=document.createElement('figcaption');var b=document.createElement('b');b.textContent=p.nome;var s=document.createElement('small');s.textContent=GL[p.g]+(p.cat?' · '+p.cat:'');cap.appendChild(b);cap.appendChild(s);
       var a=document.createElement('a');a.className='btn btn-wa';a.target='_blank';a.rel='noopener';
       a.href='https://wa.me/5517992579140?text='+encodeURIComponent(p.msg||('Olá! Vi no site a peça "'+p.nome+'" (código IJ-0'+p.id+') e tenho interesse.'));
       a.innerHTML='<svg aria-hidden="true"><use href="#i-wa"/></svg>Quero essa peça';
@@ -618,9 +618,10 @@ function iniciarLancamentos(){
   Promise.all([pega('galeria.json'),pega('vitrine.json')]).then(function(r){
     var g=(r[0]&&r[0].fotos)||[], v=(r[1]&&r[1].pecas)||[], hoje=Date.now();
     var gf=g.map(function(x){var dt=x.data.split('-'),br=dt[2]+'/'+dt[1];
-      return {img:x.img,nome:'Postado em '+br,cat:'Do Instagram',g:x.tema==='feminino'?'fem':(x.tema==='masculino'?'masc':'todos'),
+      var g=x.g||(x.tema==='feminino'?'fem':(x.tema==='masculino'?'masc':'todos')), nome=x.nome||'Novidade da loja';
+      return {img:x.img,nome:nome,cat:x.cat||'',g:g,
         novo:(hoje-new Date(x.data+'T12:00:00-03:00'))<7*864e5,
-        msg:'Olá! Vi no site a foto postada em '+br+' e tenho interesse nas peças. Tem no meu tamanho?'};});
+        msg:'Olá! Vi no site a peça "'+nome+'" (foto de '+br+') e tenho interesse. Tem no meu tamanho?'};});
     pecas=gf.concat(v.slice().sort(function(a,b){return b.id-a.id}));
     if(!pecas.length){document.getElementById('lancamentos').hidden=true;return;}
     desenha();
