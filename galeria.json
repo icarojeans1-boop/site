@@ -1,6 +1,14 @@
 {
  "fotos": [
   {
+   "img": "img/galeria/2026-11-22_1.jpg",
+   "data": "2026-11-22",
+   "tema": "",
+   "link": "",
+   "g": "todos",
+   "cat": ""
+  },
+  {
    "img": "img/galeria/2026-11-21_6.jpg",
    "data": "2026-11-21",
    "tema": "feminino",
